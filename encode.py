@@ -185,7 +185,7 @@ def df_to_sparse(df, Q_mat, active_features):
                        sparse.hstack([features[x] for x in features.keys() if x != 'df'])]).tocsr()
     return X
 
-
+import time
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Encode sparse feature matrix for logistic regression.')
     parser.add_argument('--dataset', type=str)
@@ -209,6 +209,9 @@ if __name__ == "__main__":
                         help='If True, historical counts are encoded as time windows.')
     args = parser.parse_args()
 
+    start = time.time()
+    print("STARTING")
+
     data_path = os.path.join('data', args.dataset)
     df = pd.read_csv(os.path.join(data_path, 'preprocessed_data.csv'), sep="\t")
     df = df[["user_id", "item_id", "timestamp", "correct", "skill_id"]]
@@ -220,3 +223,6 @@ if __name__ == "__main__":
 
     X = df_to_sparse(df, Q_mat, active_features)
     sparse.save_npz(os.path.join(data_path, f"X-{features_suffix}"), X)
+
+    end = time.time()
+    print(f"ENDING: {end-start}")

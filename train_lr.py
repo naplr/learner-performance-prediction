@@ -13,13 +13,16 @@ def compute_metrics(y_pred, y):
     mse = brier_score_loss(y, y_pred)
     return acc, auc, nll, mse
 
-
+import time
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Train logistic regression on sparse feature matrix.')
     parser.add_argument('--X_file', type=str)
     parser.add_argument('--dataset', type=str)
     parser.add_argument('--iter', type=int, default=1000)
     args = parser.parse_args()
+
+    start = time.time()
+    print("STARTING")
 
     features_suffix = (args.X_file.split("-")[-1]).split(".")[0]
 
@@ -56,3 +59,6 @@ if __name__ == "__main__":
     print(f"{args.dataset}, features = {features_suffix}, "
           f"auc_train = {auc_train}, auc_test = {auc_test}, "
           f"mse_train = {mse_train}, mse_test = {mse_test}")
+        
+    end = time.time()
+    print(f"ENDING: {end-start}")
